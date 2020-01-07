@@ -1,0 +1,47 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+  - windows
+jobs:
+  fast_finish: true
+
+before_install:
+  - CSFML_VERSION_RE=$(grep -E 'VERSION_(MAJOR|MINOR) [0-9]+' CMakeLists.txt | grep -E -o '[0-9]+' | xargs printf '%d\\.%d')
+  - SFML_VERSION=$(git ls-remote --tags https://github.com/SFML/SFML | grep -E -o "\b${CSFML_VERSION_RE}\b\S*$" | sort -V | tail -1)
+  - echo "Detected CSFML version as '${CSFML_VERSION_RE}', latest corresponding SFML is '${SFML_VERSION}'."
+
+install:
+  - wget "https://github.com/SFML/SFML/archive/${SFML_VERSION}.zip" -O sfml.zip
+  - unzip sfml.zip
+  - mv "SFML-${SFML_VERSION}" sfml
+
+  - mkdir -p sfml-build
+  - pushd sfml-build
+  - cmake ../sfml -DCMAKE_INSTALL_PREFIX=../sfml-install
+  - cmake --build . --target install
+  - popd
+  - SFML_DIR=$(cd sfml-install && pwd)
+
+script:
+  - mkdir -p build
+  - pushd build
+  - cmake .. -DCMAKE_PREFIX_PATH="${SFML_DIR}" -DCSFML_LINK_SFML_STATICALLY=FALSE -DCMAKE_INSTALL_PREFIX=../install
+  - cmake --build . --target install
+
+cache:
+  directories:
+    - sfml-build
+
+addons:
+  apt_packages:
+    - cmake
+    - libflac-dev
+    - libfreetype6-dev
+    - libgl1-mesa-dev
+    - libopenal-dev
+    - libudev-dev
+    - libvorbis-dev
+    - libx11-dev
+    - libxrandr-dev
