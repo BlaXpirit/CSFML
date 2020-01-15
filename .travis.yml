@@ -19,7 +19,7 @@ install:
 
   - mkdir -p sfml-build
   - pushd sfml-build
-  - cmake ../sfml -DCMAKE_INSTALL_PREFIX=../sfml-install
+  - cmake ../sfml -D{CMAKE_INSTALL_PREFIX,SFML_DEPENDENCIES_INSTALL_PREFIX}=../sfml-install
   - cmake --build . --target install
   - popd
   - SFML_DIR=$(cd sfml-install && pwd)
@@ -34,7 +34,7 @@ script:
   - cmake --build . --target install
   - popd
   - CSFML_DIR=$(cd install && pwd)
-  - LIBRARY_PATH="${SFML_DIR}/lib:${CSFML_DIR}/lib" ${CC} -l{c,}sfml-{audio,graphics,window,system} example.c
+  - LIBRARY_PATH="${SFML_DIR}/lib:${CSFML_DIR}/lib" ${CC} -I"${SFML_DIR}/include" -I"${CSFML_DIR}/include" -l{c,}sfml-{audio,graphics,window,system} example.c
 
 cache:
   directories:
