@@ -29,19 +29,19 @@
 ///     /* Create the main window */
 ///     window = sfRenderWindow_create(mode, "SFML window", sfResize | sfClose, NULL);
 ///     if (!window)
-///         return EXIT_FAILURE;
+///         return 1;
 ///
 ///     /* Load a sprite to display */
 ///     texture = sfTexture_createFromFile("cute_image.jpg", NULL);
 ///     if (!texture)
-///         return EXIT_FAILURE;
+///         return 1;
 ///     sprite = sfSprite_create();
 ///     sfSprite_setTexture(sprite, texture, sfTrue);
 /// 
 ///     /* Create a graphical text to display */
 ///     font = sfFont_createFromFile("arial.ttf");
 ///     if (!font)
-///         return EXIT_FAILURE;
+///         return 1;
 ///     text = sfText_create();
 ///     sfText_setString(text, "Hello SFML");
 ///     sfText_setFont(text, font);
@@ -50,7 +50,7 @@
 ///     /* Load a music to play */
 ///     music = sfMusic_createFromFile("nice_music.ogg");
 ///     if (!music)
-///         return EXIT_FAILURE;
+///         return 1;
 ///
 ///     /* Play the music */
 ///     sfMusic_play(music);
@@ -87,7 +87,7 @@
 ///     sfTexture_destroy(texture);
 ///     sfRenderWindow_destroy(window);
 /// 
-///     return EXIT_SUCCESS;
+///     return 0;
 /// }
 /// \endcode
 ////////////////////////////////////////////////////////////

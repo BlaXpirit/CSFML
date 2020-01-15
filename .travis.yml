@@ -24,11 +24,17 @@ install:
   - popd
   - SFML_DIR=$(cd sfml-install && pwd)
 
+before_script:
+  - awk '/\\code/ {p=1; next}  /\\endcode/ {p=0}  p {print substr($0, 5)}' doc/mainpage.hpp > example.c
+
 script:
   - mkdir -p build
   - pushd build
   - cmake .. -DCMAKE_PREFIX_PATH="${SFML_DIR}" -DCSFML_LINK_SFML_STATICALLY=FALSE -DCMAKE_INSTALL_PREFIX=../install
   - cmake --build . --target install
+  - popd
+  - CSFML_DIR=$(cd install && pwd)
+  - LIBRARY_PATH="${SFML_DIR}/lib:${CSFML_DIR}/lib" ${CC} -l{c,}sfml-{audio,graphics,window,system} example.c
 
 cache:
   directories:
