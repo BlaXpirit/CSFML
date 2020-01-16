@@ -34,7 +34,7 @@ script:
   - cmake --build . --target install
   - popd
   - CSFML_DIR=$(cd install && pwd)
-  - ${CC} -I"${SFML_DIR}/include" -I"${CSFML_DIR}/include" -L"${SFML_DIR}/lib" -L"${CSFML_DIR}/lib" -l{c,}sfml-{audio,graphics,window,system} example.c
+  - ${CC} -I"${SFML_DIR}/include" -I"${CSFML_DIR}/include" -L"${SFML_DIR}"/{lib,bin} -L"${CSFML_DIR}"/{lib,bin} example.c -l{c,}sfml-{audio,graphics,window,system}
 
 cache:
   directories:
